@@ -42,6 +42,7 @@ var css = csjs`
     display: flex;
     flex-flow: column;
     min-height: 100vh;
+    font-family: ${FONT};
   }
   .content {
     position: relative;
@@ -97,35 +98,83 @@ var css = csjs`
     display: flex;
     background-color: #43409a;
     height: 90vh;
+    align-items: center;
   }
   .wide {
-    margin: 1% 0;
+    margin: 1%;
     display: flex;
     flex-direction: column;
     width: 70%;
     height: 85vh;
   }
   .narrow {
-    margin: 1% 0 1% 2%;
+    margin: 1%;
     width: 27%;
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .editor {
+    border: 5px solid #d6dbe1;
+    width: 100%;
     height: 85vh;
   }
   .video {
     border: 5px solid #d6dbe1;
+    width: 100%;
+    height: 45vh;
+  }
+  .bottom {
+    height: 39vh;
+  }
+  .switchButtons {
+    display: flex;
+    height: 5vh;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+  }
+  .infoViewButton,
+  .chatViewButton {
+    border: 5px solid #d6dbe1;
+    font-size: 20px;
     width: 50%;
+    background-color: transparent;
+    font-style: capitalize;
+  }
+  .infoViewButton:hover,
+  .chatViewButton:hover {
+    background-color: white;
+    color: #43409a;
+  }
+  .infoBox {
+    background-color: white;
+    border-top: none;
+    width: 100%;
+    height: 34vh;
+    display: flex;
+    align-items: center;
+  }
+  .chatBox {
+    display: flex;
+    position: relative;
+    flex-grow: 1;
+    min-width: 300px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .gitter {
+    position: absolute;
+    width: 139.4%;
+    height: 56.5vh;
+    transform: translate(-20%, 24%) scale(0.6);
     align-self: center;
-    height: 40vh;
   }
-  .editor {
-    border: 5px solid #d6dbe1;
-    margin: 1% 1% 0 1%;
-    width: 100%;
-    height: 55vh;
-  }
-  .chat {
-    border: 5px solid #d6dbe1;
-    width: 100%;
-    height: 85vh;
+  .welcome {
+    font-size: 20px;
+    padding: 0 10%;
+    color: #43409a;
   }
 `
 
@@ -145,11 +194,20 @@ var logo = bel`
   <img class="${css.logo}" onclick=${home} title = "made with love by Wizard Amigos" src="${logo_url}">
 `
 var lesson = 0
-var series = 'JS workshop:'
+var series = 'PORTFOLIO PAGE with YO and CSJS:'
 var video = iframe(`https://www.youtube.com/embed/${videos[0]}`, css.video)
-var editor = iframe("https://codesandbox.io/embed/m38n0vrm98", css.editor)
-var chat = iframe("https://gitter.im/wizardamigosinstitute/program/~embed", css.chat)
-
+var editor = iframe("https://codesandbox.io/embed/k13vlrxzzo?fontsize=12&hidenavigation=1", css.editor)
+var gitter = iframe("https://gitter.im/wizardamigosinstitute/program/~embed", css.gitter)
+var chatBox = bel`<div class=${css.chatBox}>${gitter}</div>`
+var infoBox = bel`
+  <div class=${css.infoBox}>
+    <div class=${css.welcome}>
+      Welcome to WizardAmigos. Click play on the video above and start with
+      the tutorial! In In the center of the screen you can see the editor
+      where you can modify the code and see the preview.
+    </div>
+  </div>`
+var view = 'info'
 
 var stats = bel`<span class=${css.stats}>${series} Lesson ${lesson + 1}/${videos.length}</span>`
 
@@ -161,12 +219,18 @@ var app = bel`
       <button onclick=${next}> ${'>'} </button>
     </div>
     <div class=${css.container}>
-      <div class=${css.wide}>
-        ${video}
-        ${editor}
-      </div>
       <div class=${css.narrow}>
-        ${chat}
+        ${video}
+        <div class=${css.bottom}>
+          <div class=${css.switchButtons}>
+            <button class=${css.infoViewButton} title='infoButton' onclick=${changeView}>Info</button>
+            <button class=${css.chatViewButton} title='chatButton' onclick=${changeView}>Chat</button>
+          </div>
+          ${infoBox}
+        </div>
+      </div>
+      <div class=${css.wide}>
+        ${editor}
       </div>
     </div>
   </div>
@@ -198,6 +262,33 @@ function iframe (src, classname) {
       allowfullscreen
     ></iframe>
   `
+}
+
+function changeView (e) {
+  console.log(e.target.title)
+  console.log('view =', view)
+  var parent = document.querySelector(`.${css.bottom}`)
+  console.log(parent)
+  if (e.target.title === 'infoButton') {
+    if (view != 'info') {
+      parent.removeChild(chatBox)
+      parent.appendChild(infoBox)
+      return view = 'info'
+    }
+  }
+  if (e.target.title === 'chatButton') {
+    if (view != 'chat') {
+      parent.removeChild(infoBox)
+      parent.appendChild(chatBox)
+      return view = 'chat'
+    }
+  }
+}
+
+function showChat () {
+  var parent = document.querySelector(`.${css.narrow}`)
+  parent.removeChild(infoBox)
+  parent.appendChild(chatBox)
 }
 
 function home () {
