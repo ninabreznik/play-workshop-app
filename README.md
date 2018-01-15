@@ -3,8 +3,8 @@
 >This is a workshop app series. We created many focused e-learning apps that can
 be used as part of a workshop or for self directed learning.
 
-Learn how to build your portfolio webpage using `JAVASCRIPT` with `NPM modules` YO and CSJS-INJECT.
-Then connect your portfolio page with your Github profile using `MINIXHR module`.
+Learn how to build your `portfolio webpage` using `javascript` with `npm` modules `yo` and `csjs-inject`.
+Then connect your portfolio page with your Github profile using `minixhr` module.
 
 See how what you will learn to build in this workshop
 
