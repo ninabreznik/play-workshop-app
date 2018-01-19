@@ -160,13 +160,12 @@ var css = csjs`
     display: flex;
     position: relative;
     flex-grow: 1;
-    min-width: 300px;
     margin-top: 20px;
     margin-bottom: 20px;
   }
   .gitter {
     position: absolute;
-    width: 139.4%;
+    width: 166.4%;
     height: 56.5vh;
     transform: translate(-20%, 24%) scale(0.6);
     align-self: center;
