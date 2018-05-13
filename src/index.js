@@ -140,7 +140,7 @@ var css = csjs`
     border: 5px solid #d6dbe1;
     font-size: 20px;
     width: 50%;
-    background-color: transparent;
+    background-color: parent;
     font-style: capitalize;
   }
   .infoViewButton:hover,
@@ -167,7 +167,7 @@ var css = csjs`
     position: absolute;
     width: 166.4%;
     height: 56.5vh;
-    transform: translate(-20%, 24%) scale(0.6);
+    transform: translate(-19.95%, 25.65%) scale(0.6);
     align-self: center;
   }
   .welcome {
@@ -201,8 +201,11 @@ var chatBox = bel`<div class=${css.chatBox}>${gitter}</div>`
 var infoBox = bel`
   <div class=${css.infoBox}>
     <div class=${css.welcome}>
-      Welcome to WizardAmigos. Click play on the video above and start with
-      the tutorial! In In the center of the screen you can see the editor
+      Welcome to WizardAmigos.
+      <br><br>1. Click play on the video above and start with
+      the tutorial!
+      <br>2. Use arrows in the top left and right corner to switch between lessons.
+      <br>3. In In the center of the screen you can see the editor
       where you can modify the code and see the preview.
     </div>
   </div>`
