@@ -1,0 +1,52 @@
+{
+  "title": "PORTFOLIO PAGE with YO and CSJS",
+  "icon": "assets/wizard.png",
+  "chat": "https://gitter.im/wizardamigosinstitute/program/~embed",
+  "lessons": [{
+    "title": "Build your portfolio 01",
+    "lesson": "https://www.youtube.com/embed/z9TSzhcJWgI",
+    "tool": "https://codesandbox.io/embed/k13vlrxzzo?fontsize=12&hidenavigation=1",
+    "info": [
+      "**Welcome to WizardAmigos**",
+      "",
+      "1. Click play on the video above and start with the tutorial!",
+      "2. Use arrows in the top left and right corner to switch between lessons.",
+      "3. In In the center of the screen you can see the editor",
+      "where you can modify the code and see the preview."
+    ]
+  },{
+    "title": "Build your portfolio 02",
+    "lesson": "https://www.youtube.com/embed/F_rA5h-9FZ0",
+    "tool": "https://codesandbox.io/embed/k13vlrxzzo?fontsize=12&hidenavigation=1"
+  },{
+    "title": "Build your portfolio 03",
+    "lesson": "https://www.youtube.com/embed/luxpr09zHxU",
+    "tool": "https://codesandbox.io/embed/k13vlrxzzo?fontsize=12&hidenavigation=1"
+  },{
+    "title": "Build your portfolio 04",
+    "lesson": "https://www.youtube.com/embed/QVUSi_AOKkQ",
+    "tool": "https://codesandbox.io/embed/k13vlrxzzo?fontsize=12&hidenavigation=1"
+  },{
+    "title": "Build your portfolio 05",
+    "lesson": "https://www.youtube.com/embed/HsvtL6iAAB8",
+    "tool": "https://codesandbox.io/embed/k13vlrxzzo?fontsize=12&hidenavigation=1"
+  },{
+    "title": "Build your portfolio 06",
+    "lesson": "https://www.youtube.com/embed/zT1VYVD7Rlk",
+    "tool": "https://codesandbox.io/embed/k13vlrxzzo?fontsize=12&hidenavigation=1"
+  },{
+    "title": "Build your portfolio 07",
+    "lesson": "https://www.youtube.com/embed/nBRH0xuIY0A",
+    "tool": "https://codesandbox.io/embed/k13vlrxzzo?fontsize=12&hidenavigation=1"
+  },{
+    "title": "Build your portfolio 08",
+    "lesson": "https://www.youtube.com/embed/ORYyfevzr0c",
+    "tool": "https://codesandbox.io/embed/k13vlrxzzo?fontsize=12&hidenavigation=1"
+  }],
+  "needs": [
+    "https://foobar.com"
+  ],
+  "unlocks": [
+    "https://google.com"
+  ]
+}
