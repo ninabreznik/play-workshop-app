@@ -3242,7 +3242,6 @@ function styles (font_url) {
       display: flex;
       height: 50%;
       flex-direction: column;
-      margin-top: 2%;
       flex-grow: 1;
     }
     .bottom {
