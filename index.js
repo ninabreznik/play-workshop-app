@@ -13,12 +13,13 @@ st.innerHTML = `
   }`
 document.head.appendChild(st)
 
-var workshop = require('wizardamigos-workshop')
+  var workshop = require('workshop_module')
 
 async function start () {
   var el = await workshop({
     theme: {
-      '--font': 'assets/PIXELADE.ttf'
+      '--font': 'assets/OverpassMono-Regular.ttf',
+      '--map': 'assets/skilltree.png'
     }
   })
   document.body.appendChild(el)

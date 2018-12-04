@@ -14,12 +14,13 @@ st.innerHTML = `
   }`
 document.head.appendChild(st)
 
-var workshop = require('wizardamigos-workshop')
+  var workshop = require('workshop_module')
 
 async function start () {
   var el = await workshop({
     theme: {
-      '--font': 'assets/PIXELADE.ttf'
+      '--font': 'assets/OverpassMono-Regular.ttf',
+      '--map': 'assets/skilltree.png'
     }
   })
   document.body.appendChild(el)
@@ -27,7 +28,9 @@ async function start () {
 
 start()
 
-},{"wizardamigos-workshop":34}],2:[function(require,module,exports){
+},{"workshop_module":34}],2:[function(require,module,exports){
+
+},{}],3:[function(require,module,exports){
 var trailingNewlineRegex = /\n[\s]+$/
 var leadingNewlineRegex = /^\n[\s]+/
 var trailingSpaceRegex = /[\s]+$/
@@ -160,7 +163,7 @@ module.exports = function appendChild (el, childs) {
   }
 }
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 var hyperx = require('hyperx')
 var appendChild = require('./appendChild')
 
@@ -261,7 +264,7 @@ module.exports = hyperx(belCreateElement, {comments: true})
 module.exports.default = module.exports
 module.exports.createElement = belCreateElement
 
-},{"./appendChild":2,"hyperx":29}],4:[function(require,module,exports){
+},{"./appendChild":3,"hyperx":29}],5:[function(require,module,exports){
 var document = require('global/document')
 var hyperx = require('hyperx')
 var onload = require('on-load')
@@ -416,7 +419,7 @@ module.exports = hyperx(belCreateElement, {comments: true})
 module.exports.default = module.exports
 module.exports.createElement = belCreateElement
 
-},{"global/document":26,"hyperx":29,"on-load":33}],5:[function(require,module,exports){
+},{"global/document":26,"hyperx":29,"on-load":33}],6:[function(require,module,exports){
 var bel = require('bel')
 var marked = require('marked')
 
@@ -444,9 +447,7 @@ function belmark (source = '', ...values) {
   return render(bel, values)
 }
 
-},{"bel":4,"marked":31}],6:[function(require,module,exports){
-
-},{}],7:[function(require,module,exports){
+},{"bel":5,"marked":31}],7:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -963,7 +964,7 @@ if (typeof document !== 'undefined') {
 module.exports = doccy;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"min-document":6}],27:[function(require,module,exports){
+},{"min-document":2}],27:[function(require,module,exports){
 (function (global){
 var win;
 
@@ -2848,10 +2849,13 @@ var belmark = require('belmark')
 
 module.exports = workshop
 
+var minimap
+
 async function workshop ({ workshop, theme = {} } = {}) {
   // var data = workshop ? require(workshop) : await fetch('/workshop.json')
   var data = await fetch(new URL('./workshop.json', location.href).href).then(response => response.json())
   var font_url = theme['--font']
+  minimap = theme['--map']
   var lessons = data.lessons
   var chat = data.chat
   if (!chat) throw new Error('no chat found')
@@ -2865,11 +2869,11 @@ async function workshop ({ workshop, theme = {} } = {}) {
   var logo_url = data.icon
 
   var logo = logo_url ? bel`
-    <img class="${css.logo} ${css.img}" onclick=${home} title="made with love by Wizard Amigos" src="${logo_url}">
+    <img class="${css.logo} ${css.img}" onclick=${home} title="decentralized e-learning made by play.ethereum.org" src="${logo_url}">
   ` : ''
 
   var lesson = 0
-  var series = bel`<span class=${css.series}>${data.title + ': ' || ''}</span>`
+  var series = bel`<span class=${css.series}>${'Learn with Play: ' +  data.title}</span>`
 
   var chatBox = bel`<div class=${css.chatBox}>
     <div style="width: 100%; height: 100%; flex-grow: 1; display: flex; justify-content: center; align-items: center">
@@ -2896,7 +2900,7 @@ async function workshop ({ workshop, theme = {} } = {}) {
   var infoBox = bel`<div class=${css.infoBox}>${info || xxx}</div></div>`
   var view = 'info'
 
-  var stats = bel`<span class=${css.stats}>Lesson ${lesson + 1}/${lessons.length}</span>`
+  var stats = bel`<span class=${css.stats}>${lesson + 1}/${lessons.length}</span>`
   var infoButton = bel`<button class="${css.infoViewButton} ${css.button}" title='infoButton' onclick=${changeView}>Info</button>`
   var chatButton = bel`<button class="${css.chatViewButton} ${css.button}" title='chatButton' onclick=${changeView}>Chat</button>`
 
@@ -2924,9 +2928,7 @@ async function workshop ({ workshop, theme = {} } = {}) {
       unlocksOpen = false
     } else {
       var el = bel`
-      <ul id="unlocks" style="position: absolute; top: 75px; right: 0; width:100px; height: 100px; background-color: pink;">
-      ${data.unlocks.map(url => bel`<li><a href="${url}" target="_blank">${url}</a></li>`)}
-      </ul>
+      <div id="unlocks" class=${css.minimapExtended}></div>
       `
       document.body.appendChild(el)
       unlocksOpen = true
@@ -2935,18 +2937,22 @@ async function workshop ({ workshop, theme = {} } = {}) {
   var app = bel`
     <div class="${css.content}">
       <div class=${css.menu}>
-        <button class=${css.button} onclick=${needs}> ${'▼'} </button>
-        <button class=${css.button} onclick=${previous}> ${'<'} </button>
+        <div class=${css.minimap} onclick=${unlocks}><input class=${css.minimapButton} title="Skill tree" type="image" src="${minimap}"></div>
         <span class=${css.head}>
-          <span class=${css.banner}>${logo} ${series} ${stats}</span>
-          ${title}
+          <span class=${css.banner}>${logo} ${series}</span>
+          ${stats} ${title}
         </span>
-        <button class=${css.button} onclick=${next}> ${'>'} </button>
-        <button class=${css.button} onclick=${unlocks}> ${'▼'} </button>
       </div>
       <div class=${css.container}>
         <div class=${css.narrow}>
-          ${video}
+          <div class=${css.top}>
+            <div class=${css.switchButtons}>
+              <button class=${css.previous} title="Previous lesson" onclick=${previous}> ${'<'} </button>
+              <div class=${css.lesson}>${title} ${stats}</div>
+              <button class=${css.next} title="Next lesson" onclick=${next}> ${'>'} </button>
+            </div>
+            ${video}
+          </div>
           <div class=${css.bottom}>
             <div class=${css.switchButtons}>
               ${infoButton}
@@ -2975,11 +2981,11 @@ async function workshop ({ workshop, theme = {} } = {}) {
     var old = video
     video = iframe(lessons[lesson].lesson, css.video)
     old.parentElement.replaceChild(video, old)
-    stats.innerText = `Lesson ${lesson + 1}/${lessons.length}`
+    stats.innerText = `${lesson + 1}/${lessons.length}`
     title.innerText = lessons[lesson].title || ''
     if (lessons[lesson].info) {
       info.innerText = ''
-      info.appendChild(await getMarkdown(lessons[0].info))
+      info.appendChild(belmark(lessons[lesson].info))
     } else {
       info.innerText = ''
       info.appendChild(belmark`no description`)
@@ -2992,7 +2998,7 @@ async function workshop ({ workshop, theme = {} } = {}) {
     var old = video
     video = iframe(lessons[lesson].lesson, css.video)
     old.parentElement.replaceChild(video, old)
-    stats.innerText = `Lesson ${lesson + 1}/${lessons.length}`
+    stats.innerText = `${lesson + 1}/${lessons.length}`
     title.innerText = lessons[lesson].title || ''
     if (lessons[lesson].info) {
       info.innerText = ''
@@ -3061,6 +3067,20 @@ function styles (font_url) {
     </style>`
   document.head.appendChild(font)
 
+  var colors = {
+    white: "#ffffff", // borders, font on input background
+    dark: "#2c323c", //background dark
+    darkSmoke: '#21252b',  // separators
+    whiteSmoke: "#f5f5f5", // background light
+    lavenderGrey: "#e3e8ee", // inputs background
+    slateGrey: "#8a929b", // text
+    violetRed: "#b25068",  // used as red in types (bool etc.)
+    aquaMarine: "#90FCF9",  // used as green in types (bool etc.)
+    turquoise: "#14b9d5",
+    yellow: "#F2CD5D",
+    androidGreen: "#9BC53D"
+  }
+
   var css = csjs`
     *, *:before, *:after { box-sizing: inherit; }
     .img { box-sizing: content-box; }
@@ -3077,17 +3097,41 @@ function styles (font_url) {
     .menu {
       display: flex;
       align-items: center;
-      min-height: 90px;
-      height: 10%;
+      min-height: 60px;
+      height: 5%;
       justify-content: space-between;
-      border: 5px solid #d6dbe1;
+      background-color: ${colors.lavenderGrey};
     }
     .container {
       display: flex;
-      background-color: #43409a;
-      border: 5px solid #d6dbe1;
+      background-color: ${colors.dark};
       border-top: none;
       flex-grow: 1;
+    }
+    .previous, .next {
+      cursor: pointer;
+      width: 10%;
+      font-size: 30px;
+      font-weight: 900;
+      font-family: ${FONT};
+      border: none;
+      background-color: ${colors.androidGreen};
+      color: ${colors.dark};
+      flex-grow: 1;
+    }
+    .previous:hover, .next:hover {
+      color: ${colors.lavenderGrey};
+    }
+    .lesson {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      width: 80%;
+      padding: 0 2%;
+      border-left: 2px solid ${colors.dark};
+      border-right: 2px solid ${colors.dark};
+      background-color: ${colors.androidGreen};
+      color: ${colors.dark};
     }
     .button {
       cursor: pointer;
@@ -3097,22 +3141,22 @@ function styles (font_url) {
       font-weight: 900;
       font-family: ${FONT};
       border: none;
-      background-color: #ffd399;
-      color: white;
+      background-color: ${colors.androidGreen};
+      color: ${colors.dark};
     }
     .head {
       margin: 0 5%;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      width: 75%;
+      justify-content: center;
+      width: 100%;
       color: black;
-      font-size:30px;
+      font-size:25px;
       font-family: ${FONT};
       font-weight: 900;
     }
     .button:hover {
-      background-color: #43409a;
+      color: ${colors.lavenderGrey};
     }
     .logo {
       margin-right: 20px;
@@ -3127,18 +3171,43 @@ function styles (font_url) {
       margin: 0 5%;
       display: flex;
       color: black;
-      font-size:30px;
+      font-size: 25px;
       font-family: ${FONT};
       font-weight: 900;
     }
     .stats {
       display: flex;
-      align-self: center;
+      color: ${colors.dark};
+      font-size: 16px;
+      font-weight: 900;
     }
     .series {
       display: flex;
       align-self: center;
       padding-right: 10px;
+      color: ${colors.turquoise};
+    }
+    .minimapButton {
+      border-radius: 50%;
+      cursor: pointer;
+      width: 50px;
+      height: 50px;
+    }
+    .minimap {
+      background-color: ${colors.lavenderGrey};
+      height: 100px;
+      width: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .minimapExtended {
+      background-image: url("${minimap}");
+      position: absolute;
+      top: 90px;
+      left: 0px;
+      width: 500px;
+      height: 500px;
     }
     .wide {
       margin: 1%;
@@ -3154,19 +3223,27 @@ function styles (font_url) {
       justify-content: space-between;
     }
     .editor {
-      border: 5px solid #d6dbe1;
       width: 100%;
       height: 100%;
     }
     .video {
-      border: 5px solid #d6dbe1;
       width: 100%;
-      height: 50%;
+      height: 100%;
       margin-bottom: 2%;
     }
     .title {
-      color: grey;
-      font-size: 25px;
+      color: ${colors.dark};
+      font-size: 16px;
+      font-weight: 900;
+      width: 70%;
+      margin-right: 2%;
+    }
+    .top {
+      display: flex;
+      height: 50%;
+      flex-direction: column;
+      margin-top: 2%;
+      flex-grow: 1;
     }
     .bottom {
       display: flex;
@@ -3176,28 +3253,31 @@ function styles (font_url) {
       flex-grow: 1;
     }
     .switchButtons {
+      font-family: ${FONT};
       display: flex;
       width: 100%;
+      height: 80px;
       flex-direction: row;
       justify-content: center;
     }
+    .infoViewButton {
+      border-right: 1px solid ${colors.dark};
+    }
+    .chatViewButton {
+      border-left: 1px solid ${colors.dark};
+    }
     .infoViewButton,
     .chatViewButton {
-      border: 5px solid #d6dbe1;
-      font-size: 20px;
+      font-size: 16px;
       width: 50%;
-      height: 40px;
-      background-color: parent;
-      font-style: capitalize;
     }
     .infoViewButton:hover,
     .chatViewButton:hover {
-      background-color: white;
-      color: #43409a;
+      color: ${colors.lavenderGrey};
     }
     .infoBox {
-      background-color: white;
-      margin-top: calc(7px);
+      background-color: ${colors.lavenderGrey};
+      border-top: 2px solid ${colors.dark};
       width: 100%;
       height: 100%;
       display: flex;
@@ -3228,11 +3308,11 @@ function styles (font_url) {
       font-family: ${FONT};
     }
     .welcome {
-      font-size: 20px;
-      padding: 0 10%;
-      color: #43409a;
+      font-size: 14px;
+      padding: 0 5%;
+      color: ${colors.dark};
     }`
   return css
 }
 
-},{"bel":3,"belmark":5,"csjs-inject":9}]},{},[1]);
+},{"bel":4,"belmark":6,"csjs-inject":9}]},{},[1]);
