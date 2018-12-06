@@ -3052,7 +3052,7 @@ async function workshop ({ workshop, theme = {} } = {}) {
   }
 
   function home () {
-    window.open('http://wizardamigos.com/', '_blank');
+    window.open('http://github.com/ethereum/play', '_blank');
   }
 }
 
@@ -3097,10 +3097,8 @@ function styles (font_url) {
     .menu {
       display: flex;
       align-items: center;
-      min-height: 60px;
       height: 5%;
-      justify-content: space-between;
-      background-color: ${colors.lavenderGrey};
+      background-color: ${colors.dark};
     }
     .container {
       display: flex;
@@ -3110,7 +3108,7 @@ function styles (font_url) {
     }
     .previous, .next {
       cursor: pointer;
-      width: 10%;
+      width: 40px;
       font-size: 30px;
       font-weight: 900;
       font-family: ${FONT};
@@ -3159,7 +3157,6 @@ function styles (font_url) {
       color: ${colors.lavenderGrey};
     }
     .logo {
-      margin-right: 20px;
       width: 50px;
       height: 50px;
     }
@@ -3171,14 +3168,14 @@ function styles (font_url) {
       margin: 0 5%;
       display: flex;
       color: black;
-      font-size: 25px;
+      font-size: 16px;
       font-family: ${FONT};
       font-weight: 900;
     }
     .stats {
       display: flex;
       color: ${colors.dark};
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 900;
     }
     .series {
@@ -3189,14 +3186,16 @@ function styles (font_url) {
     }
     .minimapButton {
       border-radius: 50%;
+      border: 1px solid ${colors.whiteSmoke};
       cursor: pointer;
-      width: 50px;
-      height: 50px;
+      width: 30px;
+      height: 30px;
     }
     .minimap {
-      background-color: ${colors.lavenderGrey};
-      height: 100px;
-      width: 100px;
+      background-color: ${colors.dark};
+      width: 30px;
+      height: 30px;
+      margin-left: 2%;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -3204,20 +3203,18 @@ function styles (font_url) {
     .minimapExtended {
       background-image: url("${minimap}");
       position: absolute;
-      top: 90px;
+      top: 49px;
       left: 0px;
       width: 500px;
       height: 500px;
     }
     .wide {
-      margin: 1%;
       display: flex;
       flex-direction: column;
       width: 70%;
     }
     .narrow {
-      margin: 1%;
-      width: 27%;
+      width: 30%;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -3229,11 +3226,10 @@ function styles (font_url) {
     .video {
       width: 100%;
       height: 100%;
-      margin-bottom: 2%;
     }
     .title {
       color: ${colors.dark};
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 900;
       width: 70%;
       margin-right: 2%;
@@ -3248,14 +3244,13 @@ function styles (font_url) {
       display: flex;
       height: 50%;
       flex-direction: column;
-      margin-top: 2%;
       flex-grow: 1;
     }
     .switchButtons {
       font-family: ${FONT};
       display: flex;
       width: 100%;
-      height: 80px;
+      height: 40px;
       flex-direction: row;
       justify-content: center;
     }
@@ -3267,7 +3262,7 @@ function styles (font_url) {
     }
     .infoViewButton,
     .chatViewButton {
-      font-size: 16px;
+      font-size: 14px;
       width: 50%;
     }
     .infoViewButton:hover,
