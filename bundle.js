@@ -2865,7 +2865,7 @@ async function workshop ({ workshop, theme = {} } = {}) {
   var video = iframe(lessons[0].lesson, css.video)
   var editor = iframe(lessons[0].tool, css.editor)
   var gitter = iframe(chat, css.gitter)
-  var title = bel`<div class=${css.title}>${lessons[0].title}</div>`
+  var title = bel`<div title=${lessons[0].title} class=${css.title}>${lessons[0].title}</div>`
   var logo_url = data.icon
 
   var logo = logo_url ? bel`
@@ -2901,8 +2901,8 @@ async function workshop ({ workshop, theme = {} } = {}) {
   var view = 'info'
 
   var stats = bel`<span class=${css.stats}>${lesson + 1}/${lessons.length}</span>`
-  var infoButton = bel`<button class="${css.infoViewButton} ${css.button}" title='infoButton' onclick=${changeView}>Info</button>`
-  var chatButton = bel`<button class="${css.chatViewButton} ${css.button}" title='chatButton' onclick=${changeView}>Chat</button>`
+  var infoButton = bel`<div class="${css.infoViewButton}" title='infoButton' onclick=${changeView}>Info</div>`
+  var chatButton = bel`<div class="${css.chatViewButton}" title='chatButton' onclick=${changeView}>Chat</div>`
 
   var needsOpen = false
   var unlocksOpen = false
@@ -2947,9 +2947,9 @@ async function workshop ({ workshop, theme = {} } = {}) {
         <div class=${css.narrow}>
           <div class=${css.top}>
             <div class=${css.switchButtons}>
-              <button class=${css.previous} title="Previous lesson" onclick=${previous}> ${'<'} </button>
+              <div class="${css.previous}" title="Previous lesson" onclick=${previous}> ${'<'} </div>
               <div class=${css.lesson}>${title} ${stats}</div>
-              <button class=${css.next} title="Next lesson" onclick=${next}> ${'>'} </button>
+              <div class="${css.next}" title="Next lesson" onclick=${next}> ${'>'} </div>
             </div>
             ${video}
           </div>
@@ -2983,6 +2983,7 @@ async function workshop ({ workshop, theme = {} } = {}) {
     old.parentElement.replaceChild(video, old)
     stats.innerText = `${lesson + 1}/${lessons.length}`
     title.innerText = lessons[lesson].title || ''
+    title.title = title.innerText
     if (lessons[lesson].info) {
       info.innerText = ''
       info.appendChild(belmark(lessons[lesson].info))
@@ -3000,6 +3001,7 @@ async function workshop ({ workshop, theme = {} } = {}) {
     old.parentElement.replaceChild(video, old)
     stats.innerText = `${lesson + 1}/${lessons.length}`
     title.innerText = lessons[lesson].title || ''
+    title.title = title.innerText
     if (lessons[lesson].info) {
       info.innerText = ''
       info.appendChild(belmark(lessons[lesson].info))
@@ -3021,7 +3023,7 @@ async function workshop ({ workshop, theme = {} } = {}) {
   }
 
   function changeView (e) {
-    // console.log(e.target.title)
+    console.log(e.target.title)
     // console.log('view =', view)
     var parent = document.querySelector(`.${css.bottom}`)
     // console.log(parent)
@@ -3107,40 +3109,29 @@ function styles (font_url) {
       flex-grow: 1;
     }
     .previous, .next {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
       width: 40px;
-      font-size: 30px;
-      font-weight: 900;
-      font-family: ${FONT};
-      border: none;
-      background-color: ${colors.androidGreen};
-      color: ${colors.dark};
-      flex-grow: 1;
+      height: 40px;
+      line-height: 100%;
+      font-size: calc(20px + 0.3vw);
     }
     .previous:hover, .next:hover {
       color: ${colors.lavenderGrey};
     }
     .lesson {
       display: flex;
+      align-items: center;
+      justify-content: center;
       justify-content: space-evenly;
       align-items: center;
-      width: 80%;
+      width: 100%;
+      height: 40px;
       padding: 0 2%;
       border-left: 2px solid ${colors.dark};
       border-right: 2px solid ${colors.dark};
-      background-color: ${colors.androidGreen};
-      color: ${colors.dark};
-    }
-    .button {
-      cursor: pointer;
-      width: 100px;
-      height: 100%;
-      font-size: 75px;
-      font-weight: 900;
-      font-family: ${FONT};
-      border: none;
-      background-color: ${colors.androidGreen};
-      color: ${colors.dark};
     }
     .head {
       margin: 0 5%;
@@ -3148,48 +3139,46 @@ function styles (font_url) {
       align-items: center;
       justify-content: center;
       width: 100%;
+      height: 100%;
       color: black;
-      font-size:25px;
       font-family: ${FONT};
-      font-weight: 900;
     }
     .button:hover {
       color: ${colors.lavenderGrey};
     }
     .logo {
-      width: 50px;
-      height: 50px;
+      width: 35px;
+      height: 35px;
     }
     .logo:hover {
       opacity: 0.9;
       cursor: pointer;
     }
     .banner {
-      margin: 0 5%;
       display: flex;
-      color: black;
-      font-size: 16px;
-      font-family: ${FONT};
-      font-weight: 900;
+      align-items: center;
+      height: 100%;
     }
     .stats {
-      display: flex;
-      color: ${colors.dark};
-      font-size: 14px;
-      font-weight: 900;
     }
     .series {
+      cursor: default;
       display: flex;
-      align-self: center;
-      padding-right: 10px;
-      color: ${colors.turquoise};
+      align-items: center;
+      justify-content: center;
+      padding-left: 2%;
+      color: ${colors.androidGreen};
+      font-size: calc(10px + 0.5vw);
+      font-weight: 900;
+      white-space: nowrap;
+      padding-top: 3px;
     }
     .minimapButton {
       border-radius: 50%;
-      border: 1px solid ${colors.whiteSmoke};
+      border: 1.5px solid ${colors.androidGreen};
       cursor: pointer;
-      width: 30px;
-      height: 30px;
+      width: calc(10px + 1.5vmin);
+      height: calc(10px + 1.5vmin);
     }
     .minimap {
       background-color: ${colors.dark};
@@ -3226,13 +3215,15 @@ function styles (font_url) {
     .video {
       width: 100%;
       height: 100%;
+      border-top: 2px solid ${colors.dark};
     }
     .title {
-      color: ${colors.dark};
-      font-size: 14px;
-      font-weight: 900;
-      width: 70%;
+      cursor: default;
       margin-right: 2%;
+      width: 70%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .top {
       display: flex;
@@ -3247,7 +3238,12 @@ function styles (font_url) {
       flex-grow: 1;
     }
     .switchButtons {
+      font-size: calc(10px + 0.3vw);
+      background-color: ${colors.androidGreen};
+      color: ${colors.dark};
+      border: none;
       font-family: ${FONT};
+      font-weight: 900;
       display: flex;
       width: 100%;
       height: 40px;
@@ -3262,8 +3258,13 @@ function styles (font_url) {
     }
     .infoViewButton,
     .chatViewButton {
-      font-size: 14px;
       width: 50%;
+      height: 40px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-grow: 1;
     }
     .infoViewButton:hover,
     .chatViewButton:hover {
@@ -3289,6 +3290,7 @@ function styles (font_url) {
       font-family: ${FONT};
       overflow-y: auto;
       flex-grow: 1;
+      border-top: 2px solid ${colors.dark};
     }
     .gitter {
       position: absolute;
@@ -3302,7 +3304,7 @@ function styles (font_url) {
       font-family: ${FONT};
     }
     .welcome {
-      font-size: 14px;
+      font-size: calc(10px + 0.3vw);
       padding: 0 5%;
       color: ${colors.dark};
     }`
